@@ -17,13 +17,23 @@ foreach(string line in lines)
     depths.Add(depth);
 }
 
+Console.WriteLine("Create List of three-measurement sliding window");
+
+List<int> slidingwindow = new List<int>();
+
+for(int count = 2; count < depths.Count; count++)
+{
+    int sum = depths[count] + depths[count-1] + depths[count-2];
+    slidingwindow.Add(sum);
+}
+
 Console.WriteLine("Counting the number of depth increases");
 
 int increases = 0;
 
-for(int count = 1; count < depths.Count; count++)
+for(int count = 1; count < slidingwindow.Count; count++)
 {
-    if(depths[count] > depths[count-1])
+    if(slidingwindow[count] >slidingwindow[count-1])
     {
         increases++;
     }

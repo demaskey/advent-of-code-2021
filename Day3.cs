@@ -2,24 +2,26 @@ using System.Text;
 
 public class Day3
 {
-    private string[] diagLines;
+    private string[] diagnosticLines;
 
     public Day3()
     {
         Console.WriteLine("Reading Diagnostic Binary lines from file day3-puzzl1");
 
-        diagLines = System.IO.File.ReadAllLines("day3-puzzle1");
+        diagnosticLines = System.IO.File.ReadAllLines("day3-puzzle1");
 
         Console.WriteLine("Read lines into string array");
-        Console.WriteLine("Line Count: {0}", diagLines.Length);
+        Console.WriteLine("Line Count: {0}", diagnosticLines.Length);
     }
 
     public void Puzzle1()
     {
+        Console.WriteLine("Day 3 - Puzzle 1");
+
         int[] countOfOnes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         int[] countOfZeros = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-        foreach(string line in diagLines)
+        foreach(string line in diagnosticLines)
         {
             // Console.WriteLine("Line of bits: {0}", line);
             for(int count = 0; count < line.Length; count++)
@@ -93,5 +95,82 @@ public class Day3
         }
 
         return returnValue;
+    }
+
+    public void Puzzle2()
+    {
+        Console.WriteLine("Day 3 - Puzzle 2");
+        Console.WriteLine("Searching for Oxygen Generator Rating");
+
+        List<string> diagnosticLinesList = new List<string>(diagnosticLines);
+
+        int index = 0;
+
+        while(diagnosticLinesList.Count != 1)
+        {
+            List<string> filteredList; 
+
+            double count = diagnosticLinesList.FindAll(x => x[index] == '1').Count;
+
+            double half = diagnosticLinesList.Count / 2.0d;
+
+            Console.WriteLine("There are {0} ones at index {1} and a total of {2} values in the list.", count, index, diagnosticLinesList.Count);
+            
+            if(count > half || count == half)
+            {
+                Console.WriteLine("\tTake the list of more ones");
+                filteredList = diagnosticLinesList.FindAll(x => x[index] == '1');
+            }
+            else
+            {
+                Console.WriteLine("\tTake the list of more zeors");
+                filteredList = diagnosticLinesList.FindAll(x => x[index] == '0');
+            }
+
+            diagnosticLinesList = filteredList;
+            index++;
+        }
+
+        Console.WriteLine("The last value in the list is {0}", diagnosticLinesList[0]);
+        double oxygenGeneratorRating = ConvertStringOfBitsToInteger(diagnosticLinesList[0]);
+        Console.WriteLine("Oxygen Generator Rating: {0}", oxygenGeneratorRating);
+
+        Console.WriteLine("Searching for CO2 Scrubber Rating");
+        diagnosticLinesList = new List<string>(diagnosticLines);
+
+        index = 0;
+
+        while(diagnosticLinesList.Count != 1)
+        {
+            List<string> filteredList;
+
+            double count = diagnosticLinesList.FindAll(x => x[index] == '0').Count;
+
+            double half = diagnosticLinesList.Count / 2.0d;
+
+            Console.WriteLine("There are {0} zeros at index {1} and a total of {2} values in the list.", count, index, diagnosticLinesList.Count);
+
+            if(count < half || count == half)
+            {
+                Console.WriteLine("\tTake the list of more zeros");
+                filteredList = diagnosticLinesList.FindAll(x => x[index] == '0');
+            }
+            else
+            {
+                Console.WriteLine("\tTake the list of more ones");
+                filteredList = diagnosticLinesList.FindAll(x => x[index] == '1');
+            }
+
+            diagnosticLinesList = filteredList;
+            index++;
+        }
+
+        Console.WriteLine("The last value in the list is {0}", diagnosticLinesList[0]);
+        double co2ScrubberRating = ConvertStringOfBitsToInteger(diagnosticLinesList[0]);
+        Console.WriteLine("CO2 Scrubber Rating: {0}", co2ScrubberRating);
+
+        double lifeSupportRating = oxygenGeneratorRating * co2ScrubberRating;
+
+        Console.WriteLine("Life Support Rating: {0}", lifeSupportRating);
     }
 }

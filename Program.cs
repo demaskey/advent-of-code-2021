@@ -35,6 +35,8 @@ Console.WriteLine("Which Advent of Code Day would you like to see the results? (
             Day3 day3 = new Day3();
 
             day3.Puzzle1();
+
+            day3.Puzzle2();
             break;
         default:
             Console.WriteLine("You must enter a number between 1 and {0}", daysAvailable);
